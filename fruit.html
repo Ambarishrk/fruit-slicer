@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Slicer Game</title>
+  <link rel="stylesheet" href="fruit.css">
+</head>
+<body>
+  <div id="game-container">
+    <h1>🍉 FRUIT SLICER 🍓</h1>
+    <p id="score">Score: 0</p>
+    <p id="high-score">High Score: 0</p>
+    <div id="play-area"></div>
+  </div>
+  <audio id="splash-sound" src="knifesound.mp3"></audio> 
+  <script>
+    const playArea = document.getElementById("play-area");
+    const scoreDisplay = document.getElementById("score");
+    const highScoreDisplay = document.getElementById("high-score");
+    const splashSound = document.getElementById("splash-sound");
+    let score = 0;
+    let highScore = 0;
+    const fruits = ["🍉", "🍎", "🍓", "🍌", "🍍"];
+    function createFruit() {
+      const fruit = document.createElement("div");
+      fruit.classList.add("fruit");
+      fruit.textContent = fruits[Math.floor(Math.random() * fruits.length)];
+      fruit.style.left = Math.random() * (playArea.offsetWidth - 50) + "px";
+      playArea.appendChild(fruit);
+      fruit.addEventListener("click", () => {
+        score++;
+        scoreDisplay.textContent = `Score: ${score}`;
+        if (score > highScore) {
+          highScore = score;
+          highScoreDisplay.textContent = `High Score: ${highScore}`;
+        }
+        splashSound.currentTime = 0;
+        splashSound.play();
+        fruit.remove();
+      });
+      setTimeout(() => {
+        if (playArea.contains(fruit)) {
+          fruit.remove();
+        }
+      }, 5000);
+    }
+    function startGame() {
+      setInterval(createFruit, 1000);
+    }
+    startGame();
+  </script>
+</body>
+</html>
